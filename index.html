@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Paiva | Performance & Saúde</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,800;1,800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-black': '#121212',
+                        'brand-green-deep': '#1B5E20',
+                        'brand-green-neon': '#66FF66',
+                    },
+                    fontFamily: {
+                        'title': ['Montserrat', 'sans-serif'],
+                        'body': ['Open Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #121212;
+            color: #FFFFFF;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .selection-neon::selection {
+            background-color: #66FF66;
+            color: #121212;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1B5E20;
+            border-radius: 10px;
+        }
+        /* FAQ Accordion Transitions */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        .faq-item.active .faq-content {
+            max-height: 500px;
+            padding-bottom: 1.5rem;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        /* Header Glass Effect */
+        .header-scrolled {
+            background-color: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Hero Overlay Gradient */
+        .hero-gradient {
+            background: linear-gradient(to right, #121212 0%, rgba(18, 18, 18, 0.7) 50%, transparent 100%);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="selection-neon">
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-6">
+        <div class="container mx-auto px-6 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#home" class="flex items-center space-x-2 group">
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-brand-green-neon fill-current group-hover:scale-110 transition-transform duration-300">
+                        <path d="M20 10 L80 10 L80 40 L40 40 L40 90 L20 90 Z" />
+                        <path d="M50 50 L90 50 L90 90 L70 90 L70 70 L50 70 Z" class="opacity-70" />
+                    </svg>
+                </div>
+                <span class="text-xl font-extrabold tracking-tighter text-white uppercase italic">
+                    PERSONAL <span class="text-brand-green-neon">PAIVA</span>
+                </span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-white hover:text-brand-green-neon transition-colors font-semibold text-xs tracking-widest uppercase">Home</a>
+                <a href="#sobre" class="text-white hover:text-brand-green-neon transition-colors font-semibold text-xs tracking-widest uppercase">Sobre</a>
+                <a href="#planos" class="text-white hover:text-brand-green-neon transition-colors font-semibold text-xs tracking-widest uppercase">Planos</a>
+                <a href="#resultados" class="text-white hover:text-brand-green-neon transition-colors font-semibold text-xs tracking-widest uppercase">Resultados</a>
+                <a href="#contato" class="text-white hover:text-brand-green-neon transition-colors font-semibold text-xs tracking-widest uppercase">Contato</a>
+                
+                <a href="https://wa.me/5500000000000" target="_blank" class="bg-brand-green-deep border border-brand-green-neon text-white px-5 py-2 rounded-full shadow-lg hover:bg-brand-green-neon hover:text-brand-black transition-all flex items-center space-x-2 font-bold text-sm group">
+                    <i class="fab fa-whatsapp text-brand-green-neon group-hover:text-brand-black"></i>
+                    <span>Agendar Avaliação</span>
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobile-nav" class="hidden md:hidden bg-brand-black border-t border-white/10 p-6 flex flex-col space-y-4 absolute top-full left-0 w-full shadow-2xl">
+            <a href="#home" class="mobile-link text-white text-lg font-bold tracking-tight uppercase">Home</a>
+            <a href="#sobre" class="mobile-link text-white text-lg font-bold tracking-tight uppercase">Sobre</a>
+            <a href="#planos" class="mobile-link text-white text-lg font-bold tracking-tight uppercase">Planos</a>
+            <a href="#resultados" class="mobile-link text-white text-lg font-bold tracking-tight uppercase">Resultados</a>
+            <a href="#contato" class="mobile-link text-white text-lg font-bold tracking-tight uppercase">Contato</a>
+            <a href="https://wa.me/5500000000000" class="bg-brand-green-neon text-brand-black px-6 py-3 rounded font-extrabold text-center flex items-center justify-center space-x-2">
+                <i class="fab fa-whatsapp"></i>
+                <span>Avaliação Grátis</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section: Hero -->
+        <section id="home" class="relative h-screen flex items-center overflow-hidden">
+            <div class="absolute inset-0 z-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="absolute inset-0 hero-gradient"></div>
+            </div>
+
+            <div class="container mx-auto px-6 relative z-10 pt-20">
+                <div class="max-w-3xl">
+                    <span class="inline-block px-4 py-1 bg-brand-green-deep text-brand-green-neon font-bold text-xs uppercase tracking-widest rounded mb-6 border border-brand-green-neon/30">
+                        Acompanhamento Premium
+                    </span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-[1.1] uppercase italic tracking-tighter">
+                        Transforme seu <span class="text-brand-green-neon">Corpo</span> com <br>
+                        quem entende de <span class="underline decoration-brand-green-deep">Performance</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-xl leading-relaxed">
+                        Treinos personalizados para saúde, estética e performance com o método Personal Paiva. Resultados reais e duradouros.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#planos" class="bg-brand-green-neon text-brand-black px-10 py-4 rounded-sm font-extrabold text-lg hover:scale-105 transition-all text-center shadow-[0_0_20px_rgba(102,255,102,0.4)]">
+                            COMEÇAR AGORA
+                        </a>
+                        <a href="#sobre" class="border border-white/30 text-white px-10 py-4 rounded-sm font-bold text-lg hover:bg-white hover:text-brand-black transition-all text-center backdrop-blur-sm">
+                            METODOLOGIA
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: About -->
+        <section id="sobre" class="py-24 bg-brand-black border-t border-white/5">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row items-center gap-16">
+                    <!-- Profile Photo -->
+                    <div class="lg:w-1/2 relative group">
+                        <div class="absolute -top-6 -left-6 w-full h-full border border-brand-green-deep -z-10 group-hover:top-0 group-hover:left-0 transition-all duration-500"></div>
+                        <div class="relative z-10 aspect-[4/5] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Personal Paiva Profile" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-8 -right-8 bg-brand-green-deep p-8 text-white hidden md:block border border-brand-green-neon/20">
+                            <p class="text-4xl font-extrabold italic mb-1 text-brand-green-neon">12+</p>
+                            <p class="text-xs uppercase tracking-[0.2em] font-bold">Anos de Experiência</p>
+                        </div>
+                    </div>
+
+                    <!-- Profile Text -->
+                    <div class="lg:w-1/2">
+                        <span class="text-brand-green-neon font-extrabold uppercase tracking-[0.3em] text-sm mb-4 block">Conheça a Profissional</span>
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-8 leading-tight uppercase italic">
+                            Sou a Personal <br> <span class="text-brand-green-deep">Paiva</span>
+                        </h2>
+                        <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                            Formada em Educação Física com foco em alto rendimento e biomecânica. No método **Personal Paiva**, não trabalhamos apenas o corpo; transformamos sua relação com a disciplina e a performance através de treinos inteligentes e seguros.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                            <div class="flex items-center space-x-3 p-4 bg-white/5 rounded-sm border-l-2 border-brand-green-deep">
+                                <i class="fas fa-award text-brand-green-neon text-xl"></i>
+                                <span class="text-sm font-bold text-white uppercase tracking-tight">Bacharel em Ed. Física</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-4 bg-white/5 rounded-sm border-l-2 border-brand-green-deep">
+                                <i class="fas fa-bolt text-brand-green-neon text-xl"></i>
+                                <span class="text-sm font-bold text-white uppercase tracking-tight">Especialista em Hipertrofia</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-4 bg-white/5 rounded-sm border-l-2 border-brand-green-deep">
+                                <i class="fas fa-bullseye text-brand-green-neon text-xl"></i>
+                                <span class="text-sm font-bold text-white uppercase tracking-tight">Foco em Emagrecimento</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-4 bg-white/5 rounded-sm border-l-2 border-brand-green-deep">
+                                <i class="fas fa-check-circle text-brand-green-neon text-xl"></i>
+                                <span class="text-sm font-bold text-white uppercase tracking-tight">Treino Personalizado</span>
+                            </div>
+                        </div>
+
+                        <a href="#planos" class="inline-flex items-center space-x-4 text-white hover:text-brand-green-neon font-bold text-lg group transition-colors italic uppercase tracking-tighter underline underline-offset-8 decoration-brand-green-deep decoration-4">
+                            <span>Conheça a Metodologia Paiva</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Benefits (Integrated) -->
+        <section class="py-24 bg-brand-black">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="group p-8 border border-white/5 bg-white/[0.02] hover:bg-brand-green-deep/10 transition-all rounded-sm">
+                        <div class="mb-6 p-4 bg-brand-green-deep/20 rounded-sm inline-block text-brand-green-neon group-hover:scale-110 transition-transform"><i class="fas fa-chart-line text-2xl"></i></div>
+                        <h4 class="text-xl font-black uppercase italic text-white mb-3 tracking-tighter">Resultados Reais</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Metodologia focada em evidências científicas para máxima eficácia no seu treino.</p>
+                    </div>
+                    <div class="group p-8 border border-white/5 bg-white/[0.02] hover:bg-brand-green-deep/10 transition-all rounded-sm">
+                        <div class="mb-6 p-4 bg-brand-green-deep/20 rounded-sm inline-block text-brand-green-neon group-hover:scale-110 transition-transform"><i class="fas fa-user-check text-2xl"></i></div>
+                        <h4 class="text-xl font-black uppercase italic text-white mb-3 tracking-tighter">Treino Único</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Nada de treinos prontos. Cada exercício é escolhido pensando na sua biomecânica.</p>
+                    </div>
+                    <div class="group p-8 border border-white/5 bg-white/[0.02] hover:bg-brand-green-deep/10 transition-all rounded-sm">
+                        <div class="mb-6 p-4 bg-brand-green-deep/20 rounded-sm inline-block text-brand-green-neon group-hover:scale-110 transition-transform"><i class="fas fa-shield-alt text-2xl"></i></div>
+                        <h4 class="text-xl font-black uppercase italic text-white mb-3 tracking-tighter">Segurança Total</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Prevenção de lesões é nossa prioridade. Treine pesado, mas treine certo.</p>
+                    </div>
+                    <div class="group p-8 border border-white/5 bg-white/[0.02] hover:bg-brand-green-deep/10 transition-all rounded-sm">
+                        <div class="mb-6 p-4 bg-brand-green-deep/20 rounded-sm inline-block text-brand-green-neon group-hover:scale-110 transition-transform"><i class="fas fa-heartbeat text-2xl"></i></div>
+                        <h4 class="text-xl font-black uppercase italic text-white mb-3 tracking-tighter">Acompanhamento</h4>
+                        <p class="text-gray-500 text-sm leading-relaxed">Monitoramento constante do seu progresso para ajustes rápidos e precisos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Plans -->
+        <section id="planos" class="py-24 bg-brand-black relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-brand-green-deep/5 -skew-x-12 transform origin-top-right"></div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="text-center max-w-2xl mx-auto mb-20">
+                    <span class="text-brand-green-neon font-extrabold uppercase tracking-[0.3em] block mb-4 text-sm">Investimento</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 uppercase italic">Planos de Treinamento</h2>
+                    <p class="text-gray-400">Escolha o nível de acompanhamento ideal para o seu objetivo e rotina.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Plano Start -->
+                    <div class="relative flex flex-col p-8 rounded-sm transition-all duration-500 hover:-translate-y-2 border border-white/10 bg-white/5">
+                        <div class="mb-6 text-brand-green-neon w-16 h-16 rounded-full flex items-center justify-center bg-brand-green-neon/10"><i class="fas fa-dumbbell text-3xl"></i></div>
+                        <h3 class="text-2xl font-black uppercase italic text-white mb-2">Plano Start</h3>
+                        <div class="mb-6">
+                            <span class="text-4xl font-black text-brand-green-neon">R$ 197</span>
+                            <span class="text-gray-500 text-sm ml-2">/mês</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 flex-grow">
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Avaliação física inicial</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Planilha de treino mensal</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Acesso ao app exclusivo</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Ideal para iniciantes</span></li>
+                        </ul>
+                        <button class="w-full py-4 rounded-sm font-black uppercase bg-white/10 text-white hover:bg-brand-green-deep transition-all">Quero este</button>
+                    </div>
+
+                    <!-- Plano Pro -->
+                    <div class="relative flex flex-col p-8 rounded-sm transition-all duration-500 hover:-translate-y-2 border border-brand-green-neon bg-brand-green-deep/10">
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-green-neon text-brand-black px-4 py-1 text-xs font-black uppercase rounded-full">Mais Procurado</div>
+                        <div class="mb-6 text-brand-green-neon w-16 h-16 rounded-full flex items-center justify-center bg-brand-green-neon/10"><i class="fas fa-fire text-3xl"></i></div>
+                        <h3 class="text-2xl font-black uppercase italic text-white mb-2">Plano Pro</h3>
+                        <div class="mb-6">
+                            <span class="text-4xl font-black text-brand-green-neon">R$ 297</span>
+                            <span class="text-gray-500 text-sm ml-2">/mês</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 flex-grow">
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Avaliação física completa</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Ajustes semanais de carga</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Suporte direto via WhatsApp</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Planejamento nutricional base</span></li>
+                        </ul>
+                        <button class="w-full py-4 rounded-sm font-black uppercase bg-brand-green-neon text-brand-black hover:scale-[1.02] transition-all">Quero este</button>
+                    </div>
+
+                    <!-- Plano Premium -->
+                    <div class="relative flex flex-col p-8 rounded-sm transition-all duration-500 hover:-translate-y-2 border border-white/10 bg-white/5">
+                        <div class="mb-6 text-brand-green-neon w-16 h-16 rounded-full flex items-center justify-center bg-brand-green-neon/10"><i class="fas fa-trophy text-3xl"></i></div>
+                        <h3 class="text-2xl font-black uppercase italic text-white mb-2">Premium</h3>
+                        <div class="mb-6">
+                            <span class="text-4xl font-black text-brand-green-neon">R$ 497</span>
+                            <span class="text-gray-500 text-sm ml-2">/mês</span>
+                        </div>
+                        <ul class="space-y-4 mb-10 flex-grow">
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Avaliação + Bioimpedância</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Treino 100% individualizado</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Consultoria via vídeo</span></li>
+                            <li class="flex items-start space-x-3 text-gray-300 text-sm"><i class="fas fa-check text-brand-green-neon mt-1"></i><span>Suporte prioritário 24/7</span></li>
+                        </ul>
+                        <button class="w-full py-4 rounded-sm font-black uppercase bg-white/10 text-white hover:bg-brand-green-deep transition-all">Quero este</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Results -->
+        <section id="resultados" class="py-24 bg-brand-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <span class="text-brand-green-neon font-extrabold uppercase tracking-[0.3em] block mb-4 text-sm">Depoimentos</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-white uppercase italic">Alunos que evoluíram</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Julia -->
+                    <div class="bg-white/5 p-10 relative overflow-hidden group border border-white/10">
+                        <i class="fas fa-quote-right absolute -top-4 -right-4 text-brand-green-deep/20 text-8xl"></i>
+                        <div class="relative z-10">
+                            <div class="flex items-center space-x-4 mb-8">
+                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80" alt="Julia" class="w-16 h-16 rounded-full object-cover border-2 border-brand-green-neon">
+                                <div>
+                                    <h4 class="text-white font-bold uppercase tracking-tight">Julia Ramos</h4>
+                                    <span class="text-brand-green-neon text-xs font-black uppercase">-12kg em 4 meses</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-lg italic leading-relaxed">"Nunca consegui manter uma rotina antes. O suporte via WhatsApp faz toda a diferença nos dias de desânimo."</p>
+                        </div>
+                    </div>
+                    <!-- Marcos -->
+                    <div class="bg-white/5 p-10 relative overflow-hidden group border border-white/10">
+                        <i class="fas fa-quote-right absolute -top-4 -right-4 text-brand-green-deep/20 text-8xl"></i>
+                        <div class="relative z-10">
+                            <div class="flex items-center space-x-4 mb-8">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80" alt="Marcos" class="w-16 h-16 rounded-full object-cover border-2 border-brand-green-neon">
+                                <div>
+                                    <h4 class="text-white font-bold uppercase tracking-tight">Marcos Vinícius</h4>
+                                    <span class="text-brand-green-neon text-xs font-black uppercase">+6kg Massa Magra</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-lg italic leading-relaxed">"Os treinos são intensos e muito bem explicados. Minha postura e força mudaram completamente em pouco tempo."</p>
+                        </div>
+                    </div>
+                    <!-- Carla -->
+                    <div class="bg-white/5 p-10 relative overflow-hidden group border border-white/10">
+                        <i class="fas fa-quote-right absolute -top-4 -right-4 text-brand-green-deep/20 text-8xl"></i>
+                        <div class="relative z-10">
+                            <div class="flex items-center space-x-4 mb-8">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80" alt="Carla" class="w-16 h-16 rounded-full object-cover border-2 border-brand-green-neon">
+                                <div>
+                                    <h4 class="text-white font-bold uppercase tracking-tight">Carla Mendes</h4>
+                                    <span class="text-brand-green-neon text-xs font-black uppercase">Fim das dores lombares</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 text-lg italic leading-relaxed">"Além do ganho estético, o foco em mobilidade me livrou de dores crônicas que me impediam de treinar."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: FAQ -->
+        <section class="py-24 bg-brand-black">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-16">
+                        <span class="text-brand-green-neon font-extrabold uppercase tracking-[0.3em] block mb-4 text-sm">FAQ</span>
+                        <h2 class="text-4xl md:text-5xl font-black text-white mb-6 uppercase italic">Dúvidas Frequentes</h2>
+                    </div>
+                    
+                    <div class="bg-white/5 border border-white/5 rounded-sm p-8 md:p-12 space-y-2">
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item border-b border-white/10">
+                            <button class="faq-trigger w-full py-6 flex items-center justify-between text-left focus:outline-none">
+                                <span class="text-xl font-bold text-white pr-8">Em quanto tempo vejo resultados?</span>
+                                <span class="faq-icon text-brand-green-neon transition-all duration-300"><i class="fas fa-plus"></i></span>
+                            </button>
+                            <div class="faq-content">
+                                <p class="text-gray-400 leading-relaxed text-lg">Os resultados variam conforme a dedicação, mas a maioria dos alunos percebe melhora no fôlego e disposição em 2 semanas, e mudanças estéticas visíveis entre 6 a 8 semanas.</p>
+                            </div>
+                        </div>
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item border-b border-white/10">
+                            <button class="faq-trigger w-full py-6 flex items-center justify-between text-left focus:outline-none">
+                                <span class="text-xl font-bold text-white pr-8">O treino é adaptado para iniciantes?</span>
+                                <span class="faq-icon text-brand-green-neon transition-all duration-300"><i class="fas fa-plus"></i></span>
+                            </button>
+                            <div class="faq-content">
+                                <p class="text-gray-400 leading-relaxed text-lg">Com certeza! Minha metodologia prevê uma fase de adaptação para quem está começando agora, focando em técnica e consciência corporal antes de grandes cargas.</p>
+                            </div>
+                        </div>
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item">
+                            <button class="faq-trigger w-full py-6 flex items-center justify-between text-left focus:outline-none">
+                                <span class="text-xl font-bold text-white pr-8">Como funciona a consultoria online?</span>
+                                <span class="faq-icon text-brand-green-neon transition-all duration-300"><i class="fas fa-plus"></i></span>
+                            </button>
+                            <div class="faq-content">
+                                <p class="text-gray-400 leading-relaxed text-lg">Através de um aplicativo exclusivo, você recebe seu cronograma de treinos com vídeos explicativos de cada exercício. O suporte via WhatsApp é diário.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Contact -->
+        <section id="contato" class="py-24 bg-brand-green-deep/5 overflow-hidden">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row gap-20">
+                    <div class="lg:w-1/3">
+                        <span class="text-brand-green-neon font-black uppercase tracking-[0.3em] block mb-4 text-sm">Comece Hoje</span>
+                        <h2 class="text-4xl md:text-5xl font-black text-white mb-10 uppercase italic">Seu corpo é o seu <br><span class="text-brand-green-neon">Legado.</span></h2>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-brand-green-neon p-3 rounded-sm text-brand-black"><i class="fab fa-whatsapp text-2xl"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white uppercase text-sm tracking-widest">WhatsApp</h4>
+                                    <p class="text-gray-400 font-bold">(81) 98888-7777</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-brand-green-neon p-3 rounded-sm text-brand-black"><i class="fab fa-instagram text-2xl"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white uppercase text-sm tracking-widest">Instagram</h4>
+                                    <p class="text-gray-400 font-bold">@paiva_personal</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-brand-green-neon p-3 rounded-sm text-brand-black"><i class="fas fa-map-marker-alt text-2xl"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white uppercase text-sm tracking-widest">Atendimento</h4>
+                                    <p class="text-gray-400">Pernambuco (Recife) & Online</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-2/3">
+                        <div class="bg-white/5 border border-white/10 p-8 md:p-12 rounded-sm shadow-2xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-green-neon/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+                            <h3 class="text-2xl font-black text-white mb-8 uppercase italic tracking-tight">Fale com o Especialista</h3>
+                            
+                            <form id="contact-form" class="grid grid-cols-1 md:grid-cols-2 gap-6" onsubmit="event.preventDefault()">
+                                <div class="md:col-span-1">
+                                    <label class="block text-gray-500 text-[10px] mb-2 font-black uppercase tracking-widest">Seu Nome</label>
+                                    <input type="text" placeholder="Nome Completo" class="w-full bg-brand-black/50 border border-white/10 rounded-sm p-4 text-white focus:outline-none focus:border-brand-green-neon transition-colors">
+                                </div>
+                                <div class="md:col-span-1">
+                                    <label class="block text-gray-500 text-[10px] mb-2 font-black uppercase tracking-widest">Seu WhatsApp</label>
+                                    <input type="tel" placeholder="(00) 00000-0000" class="w-full bg-brand-black/50 border border-white/10 rounded-sm p-4 text-white focus:outline-none focus:border-brand-green-neon transition-colors">
+                                </div>
+                                <div class="md:col-span-2 relative">
+                                    <label class="block text-gray-500 text-[10px] mb-2 font-black uppercase tracking-widest">Qual seu principal desafio?</label>
+                                    <select class="w-full bg-brand-black/50 border border-white/10 rounded-sm p-4 text-gray-400 focus:outline-none focus:border-brand-green-neon transition-colors appearance-none cursor-pointer">
+                                        <option>Perder Gordura</option>
+                                        <option>Ganhar Massa Muscular</option>
+                                        <option>Condicionamento Atleta</option>
+                                        <option>Saúde e Longevidade</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute bottom-5 right-5 text-gray-500 pointer-events-none"></i>
+                                </div>
+                                <div class="md:col-span-2 pt-4">
+                                    <button type="submit" class="w-full bg-brand-green-neon text-brand-black py-5 rounded-sm font-black text-lg hover:scale-[1.01] transition-all shadow-lg uppercase italic tracking-tighter">
+                                        Enviar Mensagem Direta
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-brand-black text-white pt-20 pb-10 border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-2">
+                    <span class="text-3xl font-black italic tracking-tighter block mb-6 uppercase">
+                        PERSONAL <span class="text-brand-green-neon">PAIVA</span>
+                    </span>
+                    <p class="text-gray-500 max-w-sm leading-relaxed mb-8 font-medium">
+                        Transformando corpos e mentes através de um treinamento de alto nível. Junte-se ao time e mude sua vida hoje.
+                    </p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full text-gray-400 hover:text-brand-green-neon hover:border-brand-green-neon transition-all"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full text-gray-400 hover:text-brand-green-neon hover:border-brand-green-neon transition-all"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-brand-green-neon font-black uppercase tracking-widest mb-6 text-sm italic">Site</h4>
+                    <ul class="space-y-4 text-sm font-bold uppercase tracking-tighter">
+                        <li><a href="#home" class="text-gray-500 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#sobre" class="text-gray-500 hover:text-white transition-colors">Sobre</a></li>
+                        <li><a href="#planos" class="text-gray-500 hover:text-white transition-colors">Planos</a></li>
+                        <li><a href="#resultados" class="text-gray-500 hover:text-white transition-colors">Resultados</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-brand-green-neon font-black uppercase tracking-widest mb-6 text-sm italic">Unidades</h4>
+                    <ul class="space-y-4 text-sm font-bold uppercase tracking-tighter text-gray-500">
+                        <li>Recife - PE</li>
+                        <li>Consultoria Online</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/5 text-center">
+                <p class="text-gray-600 text-[10px] uppercase tracking-[0.4em] font-bold">
+                    &copy; 2024 Personal Paiva. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Vanilla -->
+    <script>
+        // Header Scroll Effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.add('hidden');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const trigger = item.querySelector('.faq-trigger');
+            trigger.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all others
+                faqItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.faq-icon i').classList.replace('fa-minus', 'fa-plus');
+                });
+
+                // Toggle current
+                if (!isActive) {
+                    item.classList.add('active');
+                    item.querySelector('.faq-icon i').classList.replace('fa-plus', 'fa-minus');
+                }
+            });
+        });
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
